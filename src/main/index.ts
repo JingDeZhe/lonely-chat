@@ -10,10 +10,12 @@ function createWindow(): void {
     height: 670,
     show: false,
     autoHideMenuBar: true,
+    frame: false,
     ...(process.platform === 'linux' ? { icon } : {}),
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
-      sandbox: false
+      sandbox: true,
+      contextIsolation: true
     }
   })
 
@@ -24,6 +26,32 @@ function createWindow(): void {
   mainWindow.webContents.setWindowOpenHandler((details) => {
     shell.openExternal(details.url)
     return { action: 'deny' }
+  })
+
+  // 窗口操作
+  ipcMain.handle('window-minimize', () => {
+    mainWindow.minimize()
+  })
+
+  ipcMain.handle('window-toggle-maximize', () => {
+    if (mainWindow.isMaximized()) {
+      mainWindow.unmaximize()
+    } else {
+      mainWindow.maximize()
+    }
+  })
+
+  ipcMain.handle('window-close', () => {
+    mainWindow.close()
+  })
+
+  // 通知渲染进程窗口状态变化
+  mainWindow.on('maximize', () => {
+    mainWindow.webContents.send('window-maximized')
+  })
+
+  mainWindow.on('unmaximize', () => {
+    mainWindow.webContents.send('window-unmaximized')
   })
 
   // HMR for renderer base on electron-vite cli.

@@ -1,7 +1,13 @@
-import { ElectronAPI } from '@electron-toolkit/preload'
+interface RENDERER_API {
+  minimize: () => void
+  toggleMaximize: () => void
+  close: () => void
+  onMaximized: (fn: Function) => void
+  onUnmaximized: (fn: Function) => void
+}
 
 declare global {
   interface Window {
-    api: (typeof import('./index'))['api']
+    api: RENDERER_API
   }
 }

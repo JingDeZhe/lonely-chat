@@ -42,6 +42,9 @@ importers:
       '@iconify-json/tabler':
         specifier: ^1.2.17
         version: 1.2.17
+      '@types/better-sqlite3':
+        specifier: ^7.6.12
+        version: 7.6.12
       '@types/node':
         specifier: ^22.13.13
         version: 22.13.17
@@ -759,6 +762,9 @@ packages:
   '@tootallnate/once@2.0.0':
     resolution: {integrity: sha512-XCuKFP5PS55gnMVu3dty8KPatLqUoy/ZYzDzAGCQ8JNFCkLXzmI7vNHCR+XpbZaMWQK/vQubr7PkYq8g470J/A==}
     engines: {node: '>= 10'}
+
+  '@types/better-sqlite3@7.6.12':
+    resolution: {integrity: sha512-fnQmj8lELIj7BSrZQAdBMHEHX8OZLYIHXqAKT1O7tDfLxaINzf00PMjw22r3N/xXh0w/sGHlO6SVaCQ2mj78lg==}
 
   '@types/cacheable-request@6.0.3':
     resolution: {integrity: sha512-IQ3EbTzGxIigb1I3qPZc1rWJnH0BmSKv5QYTalEwweFvyBDLSAe24zP0le/hyi7ecGfZVlIVAg4BZqb8WBwKqw==}
@@ -3698,6 +3704,10 @@ snapshots:
       defer-to-connect: 2.0.1
 
   '@tootallnate/once@2.0.0': {}
+
+  '@types/better-sqlite3@7.6.12':
+    dependencies:
+      '@types/node': 22.13.17
 
   '@types/cacheable-request@6.0.3':
     dependencies:

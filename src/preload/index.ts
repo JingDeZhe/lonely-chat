@@ -1,7 +1,8 @@
 import { contextBridge, ipcRenderer } from 'electron'
+import { ExposedApi } from './types'
 
 // Custom APIs for renderer
-export const api = {
+const electronAPI: ExposedApi = {
   minimize: () => ipcRenderer.invoke('window-minimize'),
   toggleMaximize: () => ipcRenderer.invoke('window-toggle-maximize'),
   close: () => ipcRenderer.invoke('window-close'),
@@ -14,7 +15,24 @@ export const api = {
     ipcRenderer.on('window-unmaximized', () => {
       fn()
     })
+  },
+
+  // 数据库方法
+  db: {
+    getUser: (lonelychatId) => ipcRenderer.invoke('db-get-user', lonelychatId),
+    addOrUpdateUser: (user) => ipcRenderer.invoke('db-add-or-update-user', user),
+    getConversations: (limit = 20, offset = 0) =>
+      ipcRenderer.invoke('db-get-conversations', limit, offset),
+    getMessages: (conversationId, limit = 50, offset = 0) =>
+      ipcRenderer.invoke('db-get-messages', conversationId, limit, offset),
+    addMessage: (message) => ipcRenderer.invoke('db-add-message', message)
   }
 }
 
-contextBridge.exposeInMainWorld('api', api)
+contextBridge.exposeInMainWorld('electronAPI', electronAPI)
+
+declare global {
+  interface Window {
+    electronAPI: ExposedApi
+  }
+}

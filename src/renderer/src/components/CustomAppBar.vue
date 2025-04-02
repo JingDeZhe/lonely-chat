@@ -17,7 +17,7 @@
 </template>
 
 <script setup lang="ts">
-const { minimize, toggleMaximize, close, onMaximized, onUnmaximized } = window.api
+const { minimize, toggleMaximize, close, onMaximized, onUnmaximized } = window.electronAPI
 
 const isMaximized = ref(false)
 

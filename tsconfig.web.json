@@ -15,7 +15,13 @@
     "paths": {
       "@/*": [
         "src/renderer/src/*"
-      ]
+      ],
+      "@main/*": [
+        "src/main/*"
+      ],
+      "@preload/*": [
+        "src/preload/*"
+      ],
     },
     "types": ["naive-ui/volar"]
   }

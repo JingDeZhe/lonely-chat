@@ -12,5 +12,7 @@
     "activityBar.background": "#242959",
     "titleBar.activeBackground": "#323A7D",
     "titleBar.activeForeground": "#FAFBFD"
-  }
+  },
+  "css.lint.unknownProperties": "ignore",
+  "scss.lint.unknownProperties": "ignore"
 }

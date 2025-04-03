@@ -30,9 +30,3 @@ const electronAPI: ExposedApi = {
 }
 
 contextBridge.exposeInMainWorld('electronAPI', electronAPI)
-
-declare global {
-  interface Window {
-    electronAPI: ExposedApi
-  }
-}

@@ -1,4 +1,5 @@
 import { MessageApi, DialogApi, NotificationApi, LoadingBarApi } from 'naive-ui'
+import { ExposedApi } from '../../../preload/types'
 
 declare global {
   interface Window {
@@ -6,6 +7,7 @@ declare global {
     $dialog: DialogApi
     $notification: NotificationApi
     $loadingBar: LoadingBarApi
+    electronAPI: ExposedApi
   }
 }
 

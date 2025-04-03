@@ -1,6 +1,6 @@
 # lonely-chat
 
-An Electron application with Vue and TypeScript
+孤独聊天，就算是离群索居也能聊天的独特程序。
 
 ## Recommended IDE Setup
 

@@ -2,12 +2,17 @@
   <div class="main-layout">
     <div class="sidebar">
       <div class="sidebar-items">
-        <router-link v-for="route in mainRoutes" :key="route.name" :to="{ name: route.name }" class="sidebar-item"
-          :class="{ active: isActive(route) }">
+        <router-link
+          v-for="route in mainRoutes"
+          :key="route.name"
+          :to="{ name: route.name }"
+          class="sidebar-item"
+          :class="{ active: isActive(route) }"
+        >
           <i :class="route.meta?.icon"></i>
         </router-link>
       </div>
-      <div class="flex-1" style="app-region:drag;"></div>
+      <div class="flex-1" style="app-region: drag"></div>
     </div>
     <div class="body">
       <custom-app-bar></custom-app-bar>
@@ -23,10 +28,9 @@ const router = useRouter()
 const route = useRoute()
 
 const mainRoutes = computed(() => {
-  return router.options.routes
-    .find(r => r.path === '/')?.children
-    ?.filter(r => r.meta?.icon)
-    || []
+  return (
+    router.options.routes.find((r) => r.path === '/')?.children?.filter((r) => r.meta?.icon) || []
+  )
 })
 
 const isActive = (routeItem: any) => {

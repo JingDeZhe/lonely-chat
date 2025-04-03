@@ -1,5 +1,7 @@
 <script setup lang="ts"></script>
 
-<template></template>
+<template>
+  <div class="chat-details"></div>
+</template>
 
 <style lang="scss"></style>

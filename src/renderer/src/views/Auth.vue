@@ -59,11 +59,20 @@ const handleRegister = async () => {
         <n-tab-pane name="login" tab="登录">
           <n-form :model="loginForm" @submit.prevent="handleLogin">
             <n-form-item label="名称" path="lonelychatId">
-              <n-input v-model:value="loginForm.lonelychatId" placeholder="请输入您的名称" :disabled="userStore.loading" />
+              <n-input
+                v-model:value="loginForm.lonelychatId"
+                placeholder="请输入您的名称"
+                :disabled="userStore.loading"
+              />
             </n-form-item>
 
-            <n-button type="primary" attr-type="submit" block :loading="userStore.loading"
-              :disabled="userStore.loading">
+            <n-button
+              type="primary"
+              attr-type="submit"
+              block
+              :loading="userStore.loading"
+              :disabled="userStore.loading"
+            >
               登录
             </n-button>
           </n-form>
@@ -75,23 +84,44 @@ const handleRegister = async () => {
         <n-tab-pane name="register" tab="注册">
           <n-form :model="registerForm" @submit.prevent="handleRegister">
             <n-form-item label="名称" path="lonelychat_id">
-              <n-input v-model:value="registerForm.lonelychat_id" placeholder="请输入您的名称" :disabled="userStore.loading" />
+              <n-input
+                v-model:value="registerForm.lonelychat_id"
+                placeholder="请输入您的名称"
+                :disabled="userStore.loading"
+              />
             </n-form-item>
 
             <n-form-item label="昵称" path="nickname">
-              <n-input v-model:value="registerForm.nickname" placeholder="请输入昵称" :disabled="userStore.loading" />
+              <n-input
+                v-model:value="registerForm.nickname"
+                placeholder="请输入昵称"
+                :disabled="userStore.loading"
+              />
             </n-form-item>
 
             <n-form-item label="头像URL" path="avatar">
-              <n-input v-model:value="registerForm.avatar" placeholder="请输入头像URL (可选)" :disabled="userStore.loading" />
+              <n-input
+                v-model:value="registerForm.avatar"
+                placeholder="请输入头像URL (可选)"
+                :disabled="userStore.loading"
+              />
             </n-form-item>
 
             <n-form-item label="备注" path="remark">
-              <n-input v-model:value="registerForm.remark" placeholder="请输入备注 (可选)" :disabled="userStore.loading" />
+              <n-input
+                v-model:value="registerForm.remark"
+                placeholder="请输入备注 (可选)"
+                :disabled="userStore.loading"
+              />
             </n-form-item>
 
-            <n-button type="primary" attr-type="submit" block :loading="userStore.loading"
-              :disabled="userStore.loading">
+            <n-button
+              type="primary"
+              attr-type="submit"
+              block
+              :loading="userStore.loading"
+              :disabled="userStore.loading"
+            >
               注册
             </n-button>
           </n-form>

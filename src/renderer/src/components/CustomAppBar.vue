@@ -1,6 +1,6 @@
 <template>
   <div class="flex justify-end overflow-hidden">
-    <div class="flex-1" style="app-region: drag;"></div>
+    <div class="flex-1" style="app-region: drag"></div>
     <div>
       <n-button quaternary @click="minimize">
         <i class="i-tabler-minus"></i>

@@ -12,7 +12,7 @@
           <i :class="route.meta?.icon"></i>
         </router-link>
       </div>
-      <div class="flex-1" style="app-region: drag"></div>
+      <div class="rest" style="app-region: drag"></div>
     </div>
     <div class="body">
       <custom-app-bar></custom-app-bar>
@@ -49,6 +49,10 @@ const isActive = (routeItem: any) => {
       --at-apply: flex flex-col gap-1;
     }
 
+    .rest {
+      flex: 1;
+    }
+
     &-item {
       --at-apply: text-2xl decoration-none text-[#ABB2BF];
 
@@ -60,6 +64,25 @@ const isActive = (routeItem: any) => {
 
   .body {
     --at-apply: grid grid-rows-[30px_1fr];
+  }
+}
+
+@media (max-width: 600px) {
+  .main-layout {
+    --at-apply: grid-cols-1 grid-rows-[1fr_auto];
+    .sidebar {
+      --at-apply: flex-row order-2;
+      &-items {
+        --at-apply: flex-1 flex-row justify-around;
+      }
+
+      .rest {
+        --at-apply: hidden;
+      }
+    }
+    .body {
+      --at-apply: order-1;
+    }
   }
 }
 </style>

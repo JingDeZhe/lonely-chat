@@ -41,14 +41,13 @@ const unreadCount = computed(() => {
 </script>
 
 <template>
-  <n-layout has-sider class="h-screen">
+  <n-layout has-sider class="h-screen overflow-hidden">
     <!-- 左侧边栏 - 对话列表 -->
     <n-layout-sider
       bordered
       collapse-mode="width"
       :collapsed-width="64"
       :width="240"
-      show-trigger
       class="h-full"
     >
       <n-scrollbar class="h-full">

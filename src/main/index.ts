@@ -16,8 +16,8 @@ function createWindow(type: WINDOW_TYPE): BrowserWindow {
   // Create the browser window.
   const isDesktop = type === WINDOW_TYPE.desktop
   const mainWindow = new BrowserWindow({
-    width: isDesktop ? 900 : 450,
-    height: isDesktop ? 670 : 800,
+    width: isDesktop ? 900 : 900, // 之后适配移动端样式
+    height: isDesktop ? 670 : 670,
     show: false,
     autoHideMenuBar: true,
     frame: false,

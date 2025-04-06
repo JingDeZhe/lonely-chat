@@ -138,6 +138,10 @@ export class LonelyChatDB {
     return this.db.prepare('SELECT * FROM users WHERE lonelychat_id = ?').get(lonelychatId) as User
   }
 
+  public getUserById(userId: number): User | undefined {
+    return this.db.prepare('SELECT * FROM users WHERE id = ?').get(userId) as User
+  }
+
   // 会话操作
   public createConversation(
     type: ConversationType,
@@ -196,7 +200,7 @@ export class LonelyChatDB {
       .prepare(
         `
       SELECT c.*, m.content AS last_message_content,
-             m.created_at AS last_message_time, u.nickname AS sender_name
+             m.created_at AS last_message_time, u.nickname AS sender_name, u.avatar AS sender_avatar
       FROM conversations c
       LEFT JOIN messages m ON c.last_message_id = m.id
       LEFT JOIN users u ON m.sender_id = u.id
@@ -263,6 +267,73 @@ export class LonelyChatDB {
         this.db = new Database(path.join(app.getPath('userData'), 'lonelychat.db'))
         this.initDatabase()
       })
+  }
+
+  // 添加AI用户检测方法
+  private getAIParticipants(conversationId: number): User[] {
+    return this.db
+      .prepare(
+        `SELECT u.* FROM conversation_members cm
+        JOIN users u ON cm.user_id = u.id
+        WHERE cm.conversation_id = ? AND u.is_ai = 1`
+      )
+      .all(conversationId) as User[]
+  }
+
+  // 消息监听处理（事件驱动模式）
+  public initAIResponseHandler() {
+    this.db
+      .prepare(
+        `INSERT INTO messages (conversation_id, sender_id, type, content, status)
+         VALUES (@conversation_id, @sender_id, @type, @content, @status)`
+      )
+      .hook('insert', async (row: Message) => {
+        if (row.status === MessageStatus.SENT) return
+
+        // 排除AI自己发送的消息
+        const sender = this.getUserById(row.sender_id)
+        if (sender?.is_ai) return
+
+        // 获取会话中的AI用户
+        const aiUsers = this.getAIParticipants(row.conversation_id)
+
+        // 为每个AI用户生成响应
+        for (const aiUser of aiUsers) {
+          const context = await this.getConversationContext(
+            row.conversation_id,
+            3 // 获取最近3条消息作为上下文
+          )
+
+          const aiResponse = await AISimulator.getInstance().generateResponse(context, aiUser)
+
+          // 插入AI回复
+          this.addMessage({
+            conversation_id: row.conversation_id,
+            sender_id: aiUser.id!,
+            type: MessageType.TEXT,
+            content: aiResponse,
+            status: MessageStatus.READ // 标记为已读
+          })
+        }
+      })
+  }
+
+  private async getConversationContext(
+    conversationId: number,
+    messageCount: number
+  ): Promise<string> {
+    const messages = this.db
+      .prepare(
+        `SELECT content FROM messages
+        WHERE conversation_id = ?
+        ORDER BY created_at DESC
+        LIMIT ?`
+      )
+      .all(conversationId, messageCount)
+      .map((m: { content: string }) => m.content)
+      .reverse()
+
+    return messages.join('\n')
   }
 }
 

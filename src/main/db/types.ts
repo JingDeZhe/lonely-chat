@@ -5,6 +5,8 @@ export interface User {
   nickname?: string
   avatar?: string
   remark?: string
+  is_ai?: boolean
+  ai_profile?: string // JSON字符串存储AI特性
   created_at?: number
   updated_at?: number
 }
@@ -67,6 +69,7 @@ export interface ConversationWithLastMessage extends Conversation {
   last_message_content?: string
   last_message_time?: number
   sender_name?: string
+  sender_avatar?: string
 }
 
 export interface MessageWithSender extends Message {

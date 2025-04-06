@@ -18,7 +18,7 @@ export class LonelyChatDB {
   private constructor() {
     const dbPath = path.join(app.getPath('userData'), 'lonelychat.db')
     this.db = new Database(dbPath, {
-      verbose: process.env.NODE_ENV === 'development' ? console.log : undefined
+      // verbose: process.env.NODE_ENV === 'development' ? console.log : undefined
     })
     this.initDatabase()
   }

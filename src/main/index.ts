@@ -5,11 +5,19 @@ import icon from '../../resources/icon.png?asset'
 import { setupDatabaseIPC } from './db/ipc'
 import { lonelyChatDB } from './db/db'
 
-function createWindow(): void {
+enum WINDOW_TYPE {
+  'desktop',
+  'mobile'
+}
+
+let desktopWindow: BrowserWindow
+let mobileWindow: BrowserWindow
+function createWindow(type: WINDOW_TYPE): BrowserWindow {
   // Create the browser window.
+  const isDesktop = type === WINDOW_TYPE.desktop
   const mainWindow = new BrowserWindow({
-    width: 900,
-    height: 670,
+    width: isDesktop ? 900 : 450,
+    height: isDesktop ? 670 : 800,
     show: false,
     autoHideMenuBar: true,
     frame: false,
@@ -21,30 +29,20 @@ function createWindow(): void {
     }
   })
 
+  if (isDesktop) {
+    mainWindow.setPosition(20, 20)
+  } else {
+    mainWindow.setPosition(700, 20)
+  }
+
   mainWindow.on('ready-to-show', () => {
+    console.log('ready to show', type)
     mainWindow.show()
   })
 
   mainWindow.webContents.setWindowOpenHandler((details) => {
     shell.openExternal(details.url)
     return { action: 'deny' }
-  })
-
-  // 窗口操作
-  ipcMain.handle('window-minimize', () => {
-    mainWindow.minimize()
-  })
-
-  ipcMain.handle('window-toggle-maximize', () => {
-    if (mainWindow.isMaximized()) {
-      mainWindow.unmaximize()
-    } else {
-      mainWindow.maximize()
-    }
-  })
-
-  ipcMain.handle('window-close', () => {
-    mainWindow.close()
   })
 
   // 通知渲染进程窗口状态变化
@@ -63,6 +61,38 @@ function createWindow(): void {
   } else {
     mainWindow.loadFile(join(__dirname, '../renderer/index.html'))
   }
+
+  return mainWindow
+}
+
+/**同时创建桌面端窗口和移动端窗口，方便调试 */
+function createWindows() {
+  mobileWindow = createWindow(WINDOW_TYPE.mobile)
+  desktopWindow = createWindow(WINDOW_TYPE.desktop)
+
+  const getActiveWindow = () => {
+    return BrowserWindow.getFocusedWindow()!
+  }
+
+  // 窗口操作
+  ipcMain.handle('window-minimize', () => {
+    const activeWindow = getActiveWindow()
+    activeWindow.minimize()
+  })
+
+  ipcMain.handle('window-toggle-maximize', () => {
+    const activeWindow = getActiveWindow()
+    if (activeWindow.isMaximized()) {
+      activeWindow.unmaximize()
+    } else {
+      activeWindow.maximize()
+    }
+  })
+
+  ipcMain.handle('window-close', () => {
+    const activeWindow = getActiveWindow()
+    activeWindow.close()
+  })
 }
 
 // This method will be called when Electron has finished
@@ -80,15 +110,12 @@ app.whenReady().then(() => {
     optimizer.watchWindowShortcuts(window)
   })
 
-  // IPC test
-  ipcMain.on('ping', () => console.log('pong'))
-
-  createWindow()
+  createWindows()
 
   app.on('activate', function () {
     // On macOS it's common to re-create a window in the app when the
     // dock icon is clicked and there are no other windows open.
-    if (BrowserWindow.getAllWindows().length === 0) createWindow()
+    if (BrowserWindow.getAllWindows().length === 0) createWindows()
   })
 
   app.on('before-quit', () => {

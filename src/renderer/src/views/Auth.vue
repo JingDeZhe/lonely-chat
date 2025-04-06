@@ -53,8 +53,11 @@ const handleRegister = async () => {
 </script>
 
 <template>
-  <div class="min-h-screen flex justify-center bg-gray-100 dark:bg-gray-900 p-4 pt-[8em]">
-    <div class="w-full max-w-md bg-white p-5 rounded shadow h-max">
+  <div
+    class="min-h-screen flex justify-center bg-gray-100 dark:bg-gray-900 p-4 pt-[8em]"
+    style="app-region: drag"
+  >
+    <div class="w-full max-w-md bg-white p-5 rounded shadow h-max" style="app-region: no-drag">
       <n-tabs default-value="login" type="line" animated>
         <n-tab-pane name="login" tab="登录">
           <n-form :model="loginForm" @submit.prevent="handleLogin">
